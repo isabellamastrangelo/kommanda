@@ -18,8 +18,18 @@ app.get('/healthCheck', (req, res) => {
 })
 
 app.post('/platos', (req, res) => {
-  const plato = Menu.agregarPlato(new Plato(req.body))
-  res.status(201).json(plato)
+	try{
+		const plato = Menu.agregarPlato(new Plato(req.body))
+  	res.status(201).json(plato)
+	} catch(error){
+		if(error instance of Plato inválido) {
+			res.status(400).Jason({ error> error.message })
+		}
+	}
+if(req.body.precio <= 0 && !req.body.nombre){
+		throw.new Error("El plato esta mocho")
+	}
+  
 })
 
 app.get('/platos', (req, res) => {
@@ -41,6 +51,39 @@ app.put('/platos/:id', (req, res) => {
 app.patch('/platos/:id', (req, res) => {
   res.sendStatus(200)
 })
+
+
+
+//Inicio apuntes Clase 2 (21/4)
+/*
+postman no verifica que esten todos los valores
+excepciones: cortan el flujo de ejecución y burbujean (vuelven para arriba hasta que le llegue al usuario)
+uso try catch para mandar excepción y no tener que cambiar logica en muchos lados  (por ej si de repente un precio puede ser 0) --> Estaría mal distribuida la responsabilidad, acoplamiento y falta de cohesion
+	Método fail fast --> Cuando hay error quiero fallar lo antes posible, no esperar (por ej en el constructor)
+*/
+app.post('/comandas', (req, res) => { // entra a carpeta comandas, manda en body la comanda, devuelve la q crea
+	res.status(200).Jason({})
+})
+
+//very comanda y buscar comanda
+app.get('/comanda/:id', (req, res) => {
+	// recibe un id, devuelve comanda
+})
+
+app.put('/comanda/:id', (req, res) => {
+// recibe id y por body el plato a agregar
+})
+
+app.patch('/comanda/:id/:idPlato', (req, res) => {
+// recibe id de comanda y plato y por body el plato a modificar
+})
+
+app.patch('/comanda/:id', (req, res) => {
+// recibe id y por body lo que quiere modificar
+})
+
+
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
