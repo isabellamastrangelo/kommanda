@@ -30,15 +30,17 @@ app.post('/platos', (req, res) => {
 })
 
 app.get('/platos', (req, res) => {
-  res.status(200).json([
-    { id: 1, nombre: "Milanesa con puré", precio: 10000, categoria: "PRINCIPAL", estaDisponible: true },
-    { id: 2, nombre: "Ensalada César", precio: 7000, categoria: "ENTRADA", estaDisponible: true },
-    { id: 3, nombre: "Flan casero", precio: 4000, categoria: "POSTRE", estaDisponible: false }
-  ])
+  res.status(200).json(Menu.listar())
 })
 
 app.get('/platos/:id', (req, res) => {
-  res.status(200).json({ id: 1, nombre: "Milanesa con puré", precio: 10000, categoria: "PRINCIPAL", estaDisponible: true })
+	try{
+  	res.status(200).json(Menu.obtenerPlatoPorId(parseInt(req.params.id)))
+	} catch(error) {
+		if (error instance of PlatoInexistente){
+			res.status.(400).Jason({ error: error.message })
+		}
+	}
 })
 
 app.put('/platos/:id', (req, res) => {
@@ -52,3 +54,8 @@ app.patch('/platos/:id', (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
+
+
+// Errores
+// Para ver 1 plato: Que exista el id --> Error 404
+// Para ver todos los platos: No hay error
