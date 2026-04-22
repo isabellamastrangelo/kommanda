@@ -33,4 +33,26 @@ export const PlatosController = {
       }
     }
   }
+
+	actualizarPlato(req, res){
+		try {
+			const plato = Menu.obtenerPlatoId(parseInt(req.params.id));
+			plato.nombre = req.params.nombre // en Javascript los setters se escriben asi
+			plato.categoria = req.params.categoria
+			plato.precio = req.params.precio
+			// Nunca llama al contructor para ver si es un plato invalido--> hacer a mano
+			Menu.guardarPlato(plato) // No siempre hace falta guardar, depende de la tecnologia que use la base de datos
+// podría sino hacer un actualizaciones = req.body y DSP hacer una funcion
+			res.status().jason()
+		}
+		catch(error){
+			if(error isinstanceof PlatoInexistente){
+				res.status(404).json({
+          error: error.message,
+        })
+      }
+		}
+	}
+
+
 }
